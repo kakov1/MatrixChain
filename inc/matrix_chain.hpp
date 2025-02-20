@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <climits>
 #include <ranges>
+#include <stack>
 #include <unordered_map>
 #include <vector>
 
@@ -41,13 +42,35 @@ public:
   static void get_optimal_order(size_t brace_count, order_table &open,
                                 const subchains_info &split, size_t i,
                                 size_t j) {
-    if (i == j) {
-      open[brace_count].push_back(i);
-    } else {
-      brace_count++;
+    struct StackFrame {
+      size_t i;
+      size_t j;
+      bool visited;
+    };
 
-      get_optimal_order(brace_count, open, split, i, split[i][j]);
-      get_optimal_order(brace_count, open, split, split[i][j] + 1, j);
+    std::stack<StackFrame> stack;
+    stack.push({i, j, false});
+
+    while (!stack.empty()) {
+      auto &frame = stack.top();
+      size_t current_i = frame.i;
+      size_t current_j = frame.j;
+
+      if (current_i == current_j) {
+        stack.pop();
+        continue;
+      }
+
+      if (!frame.visited) {
+        size_t k = split[current_i][current_j];
+        open[++brace_count].push_back(k);
+
+        frame.visited = true;
+        stack.push({current_i, k, false});
+        stack.push({k + 1, current_j, false});
+      } else {
+        stack.pop();
+      }
     }
   }
 
@@ -177,9 +200,13 @@ public:
       }
     }
 
+#ifdef DEBUG
+    print_optimal_order(split, 0, n - 1);
+    std::cout << std::endl;
+#endif
+
     order_table open{};
     get_optimal_order(0, open, split, 0, n - 1);
-    print_optimal_order(split, 0, n - 1);
 
     size_vector keys, ans;
 

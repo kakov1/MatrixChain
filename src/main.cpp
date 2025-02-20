@@ -23,7 +23,6 @@ int main() {
 
   std::vector<size_t> ans = MatrixChain<int>::optimal_order(a);
 
-  std::cout << std::endl;
   for (auto &&mtrx : ans) {
     std::cout << mtrx << " ";
   }
