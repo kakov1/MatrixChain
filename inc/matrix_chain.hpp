@@ -18,7 +18,7 @@ private:
   using reference = T &;
   using const_reference = const T &;
 
-public:
+private:
   std::vector<Matrix<T>> chain_;
 
   void validate_next_matrix_size(const Matrix<T> &mtrx) const {
