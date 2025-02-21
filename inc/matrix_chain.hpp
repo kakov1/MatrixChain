@@ -273,7 +273,7 @@ public:
     return ans;
   }
 
-  void print_info(const subchains_info &&vect) {
+  void print_info(const subchains_info &&vect) const {
     for (auto &&i : vect) {
       std::cout << "[ ";
       for (auto it = i.begin(); it != i.end(); ++it) {
