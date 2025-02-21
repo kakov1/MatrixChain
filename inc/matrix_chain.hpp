@@ -27,6 +27,12 @@ public:
     }
   }
 
+  void validate_prev_matrix_size(const Matrix<T> &mtrx) const {
+    if (!chain_.empty() && chain_.front().get_rows() != mtrx.get_cols()) {
+      throw std::runtime_error("Incorrect size for multiply.");
+    }
+  }
+
   void validate_chain_size() const {
     if (chain_.size() == 0) {
       throw std::runtime_error("Chain is empty.");
@@ -133,7 +139,7 @@ public:
   }
 
   void push_front(const Matrix<T> &mtrx) {
-    validate_next_matrix_size(mtrx);
+    validate_prev_matrix_size(mtrx);
 
     chain_.push_back(mtrx);
   }
@@ -155,7 +161,7 @@ public:
   template <typename... Args> void emplace_front(Args &&...args) {
     Matrix<T> tmp(std::forward<Args>(args)...);
 
-    validate_next_matrix_size(tmp);
+    validate_prev_matrix_size(tmp);
 
     chain_.emplace_front(std::move(tmp));
   }
@@ -166,15 +172,57 @@ public:
     Matrix<T> result = chain_[0];
 
     for (auto &&mtrx : std::views::drop(chain_, 1)) {
-      result.multiply(mtrx);
+      result = result.multiply(mtrx);
     }
 
     return result;
   }
 
-  void optimal_multiply() const {}
+  Matrix<T> optimal_multiply() const {
+    validate_chain_size();
 
-  static size_vector optimal_order(const size_vector &sizes) {
+    auto chain = chain_;
+    size_vector optimal_order = find_optimal_order();
+    
+    std::vector<int> mtrcs_positions(optimal_order.size() + 1, 1);
+    size_t left = 0, right = 0;
+
+    for (auto &&mtrx : optimal_order) {
+      left = mtrx;
+      right = mtrx + 1;
+
+      if (mtrcs_positions[left] == 0) {
+        while (mtrcs_positions[left] == 0) {
+          --left;
+        }
+      }
+
+      if (mtrcs_positions[right] == 0) {
+        while (mtrcs_positions[right] == 0) {
+          ++right;
+        }
+      }
+
+      chain[left] = chain[left].multiply(chain[right]);
+      mtrcs_positions[right] = 0;
+    }
+
+    return chain[0];
+  }
+
+  size_vector find_optimal_order() const {
+    size_vector sizes;
+
+    sizes.push_back(chain_.front().get_rows());
+
+    for (auto &&mtrx : chain_) {
+      sizes.push_back(mtrx.get_cols());
+    }
+
+    return find_optimal_order(sizes);
+  }
+
+  static size_vector find_optimal_order(const size_vector &sizes) {
     size_t n = sizes.size() - 1;
     subchains_info costs(n, size_vector(n, 0));
     subchains_info split(n, size_vector(n, 0));
@@ -224,8 +272,6 @@ public:
 
     return ans;
   }
-
-  void compare_multiplying_order() {}
 
   void print_info(const subchains_info &&vect) {
     for (auto &&i : vect) {

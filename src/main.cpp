@@ -3,25 +3,27 @@
 using namespace hwm;
 
 int main() {
-  // MatrixChain<int> chain;
-  // 5, 30, 35, 15, 5, 10
-  // 10, 30, 5, 60
-  //  60,10, 5, 1, 2, 4, 30, 10, 100, 1500, 121, 241, 5, 30, 10, 11
-  // ans: ((A1 * (A2 * A3)) * (((((((((((A4 * A5) * A6) * A7) * A8) * A9) * A10)
-  // * A11) * A12) * A13) * A14) * A15))
+  std::vector<size_t> sizes;
+  long long number, buf;
 
-  // std::vector<size_t> test = {60,  10,   5,   1,   2, 4,  30, 10,
-  // 100, 1500, 121, 241, 5, 30, 10, 11};
-  // std::vector<size_t> test = {10, 30, 5, 60};
+  std::cin >> number;
 
-  std::vector<size_t> a;
-  size_t buf;
-
-  while (std::cin >> buf) {
-    a.push_back(buf);
+  if (!std::cin.good() || number <= 0) {
+    throw std::runtime_error(
+        "Number of sizes must be unsigned int and not zero.");
   }
 
-  std::vector<size_t> ans = MatrixChain<int>::optimal_order(a);
+  for (; number > 0; --number) {
+    std::cin >> buf;
+
+    if (!std::cin.good() || buf <= 0) {
+      throw std::runtime_error("Input error.");
+    }
+
+    sizes.push_back(buf);
+  }
+
+  std::vector<size_t> ans = MatrixChain<long long>::find_optimal_order(sizes);
 
   for (auto &&mtrx : ans) {
     std::cout << mtrx << " ";
