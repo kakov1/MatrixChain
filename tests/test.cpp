@@ -9,10 +9,13 @@
 using namespace hwm;
 using std::size_t;
 
+const std::string TEST_DIR = std::string(TEST_DATA_DIR) + "/";
+
 class EteTests : public testing::Test {
 protected:
   std::vector<size_t> test(size_t test_number) {
-    std::ifstream test_file(std::to_string(test_number) + "test.in");
+    std::ifstream test_file(TEST_DIR + "in/" + std::to_string(test_number) +
+                            "test.in");
 
     test_file.exceptions(std::ifstream::badbit);
 
@@ -33,7 +36,8 @@ protected:
   }
 
   std::vector<size_t> get_answer(size_t test_number) {
-    std::ifstream answer_file(std::to_string(test_number) + "test.out");
+    std::ifstream answer_file(TEST_DIR + "out/" + std::to_string(test_number) +
+                              "test.out");
 
     answer_file.exceptions(std::ifstream::badbit);
 

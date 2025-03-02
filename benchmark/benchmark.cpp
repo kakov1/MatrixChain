@@ -4,6 +4,8 @@
 
 using namespace hwm;
 
+const std::string BENCHMARK_DIR = std::string(BENCHMARK_DATA_DIR) + "/";
+
 template <typename T>
 void create_chain_from_file(std::string file_path, MatrixChain<T> &chain) {
   std::ifstream benchmark_file(file_path);
@@ -29,7 +31,7 @@ void create_chain_from_file(std::string file_path, MatrixChain<T> &chain) {
 int main() {
   MatrixChain<long long> chain;
 
-  create_chain_from_file("benchmark.in", chain);
+  create_chain_from_file(BENCHMARK_DIR + "in/" + "benchmark.in", chain);
 
   auto start_opt = std::chrono::high_resolution_clock::now();
   Matrix<long long> optimal_res = chain.optimal_multiply();
