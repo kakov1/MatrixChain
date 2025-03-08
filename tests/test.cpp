@@ -1,7 +1,6 @@
 #include "matrix_chain.hpp"
 #include <cstddef>
 #include <fstream>
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <string>
 #include <vector>
@@ -58,6 +57,6 @@ TEST_F(EteTests, test) {
 }
 
 int main(int argc, char *argv[]) {
-  ::testing::InitGoogleMock(&argc, argv);
+  ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }

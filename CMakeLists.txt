@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.14)
 project(MatrixChain)
 
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
 
 include(FetchContent)
 
