@@ -1,0 +1,30 @@
+#!/usr/bin/bash
+
+MATRIXCHAIN="../build/src/matrixchain"
+
+IN_DIR="in"
+OUT_DIR="out"
+
+run_test() {
+    local input_file="$1"
+    local expected_output_file="$2"
+
+    echo "Running test: $input_file"
+
+    if diff -u "$expected_output_file" <($MATRIXCHAIN < "$input_file"); then
+        echo "Test passed: $input_file"
+    else
+        echo "Test failed: $input_file"
+        return 1
+    fi
+}
+
+for input_file in "$IN_DIR"/*.in; do
+    tmp_file="${input_file#in/}"
+    output_file="$OUT_DIR/${tmp_file%.in}.out"
+    if ! run_test "$input_file" "$output_file"; then
+        exit 1
+    fi
+done
+
+echo "All tests passed!"

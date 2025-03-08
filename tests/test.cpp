@@ -10,7 +10,7 @@ using std::size_t;
 
 const std::string TEST_DIR = std::string(TEST_DATA_DIR) + "/";
 
-class EteTests : public testing::Test {
+class AllTests : public testing::Test {
 protected:
   std::vector<size_t> test(size_t test_number) {
     std::ifstream test_file(TEST_DIR + "in/" + std::to_string(test_number) +
@@ -51,7 +51,7 @@ protected:
   }
 };
 
-TEST_F(EteTests, test) {
+TEST_F(AllTests, test) {
   for (int i = 1; i <= 5; ++i)
     ASSERT_TRUE(test(i) == get_answer(i));
 }
