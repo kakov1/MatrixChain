@@ -1,7 +1,5 @@
 add_executable(test_chain test.cpp)
 
-include(CTest)
-
 set(TEST_DATA_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_compile_definitions(test_chain PUBLIC TEST_DATA_DIR="${TEST_DATA_DIR}")
