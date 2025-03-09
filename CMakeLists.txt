@@ -6,11 +6,10 @@ set(CMAKE_CXX_STANDARD 20)
 include(FetchContent)
 include(CTest)
 
-
 FetchContent_Declare(
   matrix
   GIT_REPOSITORY https://github.com/kakov1/Matrix.git
-  GIT_TAG        9760458fc97e01f069879e1a812187788723e1e9
+  GIT_TAG        4ea5dc83e1c44f62c4fd6757465fb06a7367ee7f
 )
 
 FetchContent_MakeAvailable(matrix)
