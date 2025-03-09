@@ -6,23 +6,23 @@ IN_DIR="in"
 OUT_DIR="out"
 
 run_test() {
-    local input_file="$1"
-    local expected_output_file="$2"
+    local in_file="$1"
+    local out_file="$2"
 
-    echo "Running test: $input_file"
+    echo "Running test: $in_file"
 
-    if diff -u "$expected_output_file" <($MATRIXCHAIN < "$input_file"); then
-        echo "Test passed: $input_file"
+    if diff -u "$out_file" <($MATRIXCHAIN < "$in_file"); then
+        echo "Test passed: $in_file"
     else
-        echo "Test failed: $input_file"
+        echo "Test failed: $in_file"
         return 1
     fi
 }
 
-for input_file in "$IN_DIR"/*.in; do
-    tmp_file="${input_file#in/}"
-    output_file="$OUT_DIR/${tmp_file%.in}.out"
-    if ! run_test "$input_file" "$output_file"; then
+for in_file in "$IN_DIR"/*.in; do
+    tmp_file="${in_file#in/}"
+    out_file="$OUT_DIR/${tmp_file%.in}.out"
+    if ! run_test "$in_file" "$out_file"; then
         exit 1
     fi
 done

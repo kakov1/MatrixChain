@@ -27,6 +27,9 @@ jobs:
            cmake .. -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
     - name: CMake release build
       run: cmake --build build/tests/;
-    - name: CMake release test
+    - name: CMake release unit tests
       run: cd build/tests/;
            ctest --output-on-failure  
+    - name: CMake release e2e tests
+      run: cd ./tests/;
+           ./end2end  
