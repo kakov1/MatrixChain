@@ -155,7 +155,7 @@ public:
 
     validate_next_matrix_size(tmp);
 
-    chain_.emplace_back(std::move(tmp));
+    chain_.push_back(std::move(tmp));
   }
 
   template <typename... Args> void emplace_front(Args &&...args) {
@@ -163,7 +163,7 @@ public:
 
     validate_prev_matrix_size(tmp);
 
-    chain_.emplace_front(std::move(tmp));
+    chain_.push_front(std::move(tmp));
   }
 
   Matrix<T> naive_multiply() const {
@@ -226,10 +226,6 @@ public:
     size_t n = sizes.size() - 1;
     subchains_info costs(n, size_vector(n, 0));
     subchains_info split(n, size_vector(n, 0));
-
-    for (size_t i = 0; i < n; ++i) {
-      costs[i][i] = 0;
-    }
 
     for (size_t length = 2; length <= n; ++length) {
       for (size_t i = 0; i < n - length + 1; ++i) {
